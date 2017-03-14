@@ -1,15 +1,14 @@
 package com.edwin.android.chucknorrisjoke.async;
 
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.edwin.android.chucknorrisjoke.adapter.JokesAdapter;
 import com.edwin.android.chucknorrisjoke.util.ChuckNorrisNetworkUtil;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -18,14 +17,15 @@ import java.util.List;
 
 public class JokeQueryTask extends AsyncTask<String, Void, List<String>> {
 
-    private TextView mJokeItemsTextView;
     private ProgressBar mLoadingIndicatorProgressBar;
+    private JokesAdapter mJokesAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         mLoadingIndicatorProgressBar.setVisibility(View.VISIBLE);
-        mJokeItemsTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
 
     }
 
@@ -40,21 +40,23 @@ public class JokeQueryTask extends AsyncTask<String, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> jokes) {
         Log.d(JokeQueryTask.class.toString(), "Joke size: "+jokes.size());
-        if(mJokeItemsTextView != null) {
-            mJokeItemsTextView.setText("");
-            for(String joke: jokes) {
-                mJokeItemsTextView.append(joke+"\n\n\n");
-            }
+        if(jokes != null) {
+            mJokesAdapter.setJokes(jokes);
         }
         mLoadingIndicatorProgressBar.setVisibility(View.INVISIBLE);
-        mJokeItemsTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    public void setmJokeItemsTextView(TextView mJokeItemsTextView) {
-        this.mJokeItemsTextView = mJokeItemsTextView;
-    }
 
     public void setmLoadingIndicatorProgressBar(ProgressBar mLoadingIndicatorProgressBar) {
         this.mLoadingIndicatorProgressBar = mLoadingIndicatorProgressBar;
+    }
+
+    public void setMjokesAdapter(JokesAdapter mJokesAdapter) {
+        this.mJokesAdapter = mJokesAdapter;
+    }
+
+    public void setMrecyclerView(RecyclerView mRecyclerView) {
+        this.mRecyclerView = mRecyclerView;
     }
 }

@@ -38,7 +38,6 @@ public class JokesAdapter extends RecyclerView.Adapter<JokesAdapter.JokesAdapter
 
     public void setJokes(List<String> jokes) {
         this.mJokes = jokes;
-        //TODO probar eliminando esta linea haber que pasa
         notifyDataSetChanged();
     }
 
